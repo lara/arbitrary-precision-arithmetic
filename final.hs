@@ -1,15 +1,5 @@
 type BigInt = String
 
-classicalMultiplication :: BigInt -> BigInt -> Int -> BigInt
-classicalMultiplication a b base
-  | len < 10 = show (a' * b')
-  | otherwise = show a'
-
-  where
-    len = (max (length a) (length b))
-    a' = read a :: Integer
-    b' = read b :: Integer
-
 karatsubaMultiplication :: BigInt -> BigInt -> Int -> BigInt
 karatsubaMultiplication a b base
   | len < 10 = show (a' * b')
