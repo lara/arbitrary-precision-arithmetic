@@ -7,6 +7,10 @@ import Control.Monad (join)
 
 type BigInt = String
 
+-- Takes in an Int as the number of digits and returns a BigInt of that length.
+randomNumber :: Int -> BigInt
+randomNumber a = take a $ randomRs ('0','9') (mkStdGen 3) :: [Char]
+
 halve :: Integer -> Integer
 halve = (`div` 2)
 
@@ -15,6 +19,21 @@ double = join (+)
 
 odd :: Integer -> Bool
 odd = (== 1) . (`mod` 2)
+
+logFloor :: Integer->Integer->Int
+logFloor b x
+  = if x < b then
+      0
+    else
+      let
+        l = 2 * logFloor (b*b) x
+        doDiv x l = if x < b then l else doDiv (x`div`b) (l+1)
+      in
+        doDiv (x`div`(b^l)) l
+
+digs :: Integral x => x -> [x]
+digs 0 = []
+digs x = x `mod` 10 : digs (x `div` 10)
 
 classicalMultiplication :: BigInt -> BigInt -> Int -> BigInt
 classicalMultiplication a b base =
@@ -46,3 +65,20 @@ karatsubaMultiplication a b base
     z0' = read z0 :: Integer
     z1' = read z1 :: Integer
     z2' = read z2 :: Integer
+
+toomMultiplication :: BigInt -> BigInt -> Integer -> BigInt
+toomMultiplication a b base
+  | len < 10 = show (a' * b')
+  | otherwise = show (a')
+
+  where
+    len = (max (length a) (length b))
+    i = max (div (logFloor base a') 3) (div (logFloor base b') 3) + 1
+    a' = read a :: Integer
+    b' = read b :: Integer
+    a2 = 0
+    a1 = 0
+    a0 = 0
+    b2 = 0
+    b1 = 0
+    b0 = 0
